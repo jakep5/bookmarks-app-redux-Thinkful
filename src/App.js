@@ -79,14 +79,18 @@ class App extends Component {
         <h1>Bookmarks!</h1>
         <Nav />
         <div className='content' aria-live='polite'>
-          <Route 
+          <Route /* THESE ROUTES BASICALLY REPLACE CONDITIONAL LOGIC */
             path='/add-bookmark'
-            render ={() => 
-              <AddBookmark 
-                onAddBookMark={this.addBookmark}
-                onClickCancel = {() => {/*What goes here? */}}/>}
+            render ={({history}) => { 
+              console.log(history)
+              return(
+                <AddBookmark 
+                  onAddBookMark={this.addBookmark}
+                  onClickCancel = {() => history.push('/')}/>
+              )
+            }}
           />
-          <Route 
+          <Route /* THESE ROUTES BASICALLY REPLACE CONDITIONAL LOGIC */
               exact path = "/"
               render = {() =>
                 <BookmarkList 

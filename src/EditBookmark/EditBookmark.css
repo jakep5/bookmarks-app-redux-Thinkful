@@ -1,0 +1,27 @@
+form.editForm {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    margin-top: 1%;
+    margin-bottom: 4%;
+    text-align: center;
+
+}
+
+input#rating::placeholder {
+    padding-left: 25px;
+}
+
+input#description {
+    display: inline-block;
+    height: 50px;
+}
+
+input#rating{
+    width: 50%;
+    position: relative;
+    left: 24%;
+}
+

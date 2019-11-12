@@ -1,6 +1,6 @@
 import React from 'react';
 import Rating from '../Rating/Rating';
-import BookmarksContext from '../BookmarksContext/BookmarksContext';
+import { BookmarksContext, BookmarksConsumer } from '../BookmarksContext/BookmarksContext';
 import config from '../config';
 import PropTypes from 'prop-types'
 import './BookmarkItem.css';
@@ -28,65 +28,48 @@ function deleteBookmarkRequest(bookmarkId, callback) {
     })
 }
 
-export default function BookmarkItem(props) {
-  return (
-    <BookmarksContext.Consumer>
-      {(context) => (
-        <li className='BookmarkItem'>
-          <div className='BookmarkItem__row'>
-            <h3 className='BookmarkItem__title'>
-              <a
-                href={props.url}
-                target='_blank'
-                rel='noopener noreferrer'>
-                {props.title}
-              </a>
-            </h3>
-            <Rating value={props.rating} />
-          </div>
-          <p className='BookmarkItem__description'>
-            {props.description}
-          </p>
-          <div className='BookmarkItem__buttons'>
-            <button
-              className='BookmarkItem__description'
-              onClick={() => {
-                deleteBookmarkRequest(
-                  props.id,
-                  context.deleteBookmark,
-                )
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        </li>
-      )}
-    </BookmarksContext.Consumer>
-  )
+export default class BookmarkItem extends React.Component {
+
+  static contextType = BookmarksContext;
+
+  render() {
+
+  
+    return (
+      <BookmarksConsumer>
+        {(context) => (
+          <li className='BookmarkItem'>
+            <div className='BookmarkItem__row'>
+              <h3 className='BookmarkItem__title'>
+                <a
+                  href={this.props.url}
+                  target='_blank'
+                  rel='noopener noreferrer'>
+                  {this.props.title}
+                </a>
+              </h3>
+              <Rating value={this.props.rating} />
+            </div>
+            <p className='BookmarkItem__description'>
+              {this.props.description}
+            </p>
+            <div className='BookmarkItem__buttons'>
+              <button
+                className='BookmarkItem__description'
+                onClick={() => {
+                  deleteBookmarkRequest(
+                    this.props.id,
+                    context.deleteBookmark,
+                  )
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </li>
+        )}
+      </BookmarksConsumer>
+    )
+  }
 }
 
-BookmarkItem.defaultProps = {
-  onClickDelete: () => {},
-  rating: 1,
-  description: ''
-};
-
-BookmarkItem.PropTypes = {
-  title: PropTypes.string.isRequired,
-  url: (props, propName, componentName) => {
-    const prop = props[propName];
-
-    if(!prop) {
-      return new Error(`error`);
-    }
-    if(typeof prop != 'string') {
-      return new Error(`Invalid prop`);
-    }
-    if (prop.length < 5 || !prop.match(new RegExp(/^https?:\/\//))) {
-      return new Error(`error`);
-    }
-  },
-  rating: PropTypes.number,
-  description: PropTypes.string
-}

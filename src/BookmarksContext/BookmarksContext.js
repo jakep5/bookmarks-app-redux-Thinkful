@@ -14,6 +14,7 @@ export class BookmarksProvider extends React.Component {
 
 
     updateAfterPatch = (updatedBookmark, bookmarkId) => {
+        console.log('reloading');
         const newBookmarks = this.state.bookmarks.map(bmrk =>
             (bmrk.id === bookmarkId)
                 ? updatedBookmark

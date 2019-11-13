@@ -15,7 +15,7 @@ class EditBookmark extends React.Component {
             title: '',
             url: '',
             description: '',
-            rating: null
+            rating: 1,
         }
     }
 
@@ -75,29 +75,23 @@ class EditBookmark extends React.Component {
         e.preventDefault();
         window.history.back();
         let bookmarkId = this.state.id
+        let newBookmark = {
+            id: this.state.id,
+            title: this.state.title,
+            url: this.state.url,
+            description: this.state.description,
+            rating: this.state.rating
+        }
+        console.log(newBookmark)
         fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
             method: 'PATCH',
+            body: JSON.stringify(newBookmark),
             headers: {
                 'content-type': 'application/json'
             },
-            body: JSON.stringify({
-                id: this.state.id,
-                title: this.state.title,
-                url: this.state.url,
-                description: this.state.description,
-                rating: this.state.rating
-            })
         })
-        .then(response => {
-            if(!response.ok) {
-                throw new Error
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(updatedBookmark => this.context.updateAfterPatch(updatedBookmark, bookmarkId))
-        .catch(error => {
-            console.log(error)
-        })
         }
        /*  const bookmarkObject = {
             title: document.getElementById('title').value,
